@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
+// createWebHashHistory permite adaptar las rutas a todas las bases de datos, sin embargo
+// no envia datos al servidor e impide posicionamiento SEO
+// createWebHistory utiliza HTML5
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -17,8 +20,13 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
     },
+      // Ruta de redireccion
     {
       path: '/blog',
+      redirect: {name: 'blog'}
+    },
+    {
+      path: '/post',
       name: 'blog',
       component: () => import('../views/BlogView.vue')
     },
@@ -43,10 +51,35 @@ const router = createRouter({
       name: 'order',
       component: () => import('../views/OrderView.vue')
     },
+      // El signo ? permite poner rutas opcionales
     {
-      path: '/compras/:productName',
-      name: 'product',
-      component: () => import('../views/ProductView.vue')
+      path: '/users/:userId(\\d+)?',
+      name: 'users',
+      component: () => import('../views/UserView.vue'),
+      // para pasar la informacion con un props en cualquier vista
+      props: true,
+      // rutas anidadas aparecen y no cambian la ruta padre
+      children: [
+        {
+          // En el primer children path va en blanco para que conicida con la ruta principal
+          // /users/:userId/
+          path: '',
+          name: 'userIndex',
+          component: () => import('../views/users/UsersIndex.vue')
+        },
+        {
+          // /users/:userId/profile
+          path: 'profile',
+          name: 'userProfile',
+          component: () => import('../views/users/UsersProfile.vue')
+        },
+        {
+          // /users/:userId/courses
+          path: 'courses',
+          name: 'userCourses',
+          component: () => import('../views/users/UsersCourses.vue')
+        }
+      ]
     },
     {
       path: '/:pathMatch(.*)',

@@ -11,9 +11,10 @@ import HelloWorld from '@/components/HelloWorld.vue'
       <HelloWorld msg="You did it!" />
 
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/blog">Blog</RouterLink>
+<!--        con v-bim se puede llamar a las notas con nombre en lugar de /about name = about-->
+        <RouterLink :to="{name: 'home'}">Home</RouterLink>
+        <RouterLink :to="{name: 'about'}">About</RouterLink>
+        <RouterLink :to="{name: 'blog'}">Blog</RouterLink>
       </nav>
     </div>
   </header>
